@@ -33,5 +33,25 @@ public class ProductService extends MainService<Product> {
         return productRepository.getProductById(productId);
     }
 
-    // Other required methods
+    /**
+     * Update a specific product by passing its ID and the new name and new price
+     */
+    public Product updateProduct(UUID productId, String newName, double newPrice) {
+        return productRepository.updateProduct(productId, newName, newPrice);
+    }
+
+    /**
+     * Apply the given discount to an array list of products' IDs
+     * The discount will be given as decimal number (60 means apply 60% discount)
+     */
+    public void applyDiscount(double discount, ArrayList<UUID> productIds) {
+        productRepository.applyDiscount(discount, productIds);
+    }
+
+    /**
+     * Delete a specific product by passing its ID
+     */
+    public void deleteProductById(UUID productId) {
+        productRepository.deleteProductById(productId);
+    }
 }
