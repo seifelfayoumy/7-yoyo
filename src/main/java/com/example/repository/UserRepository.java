@@ -2,6 +2,7 @@ package com.example.repository;
 
 import com.example.model.Order;
 import com.example.model.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,22 +11,20 @@ import java.util.UUID;
 @Repository
 @SuppressWarnings("rawtypes")
 public class UserRepository extends MainRepository<User> {
+    @Value("${spring.application.userDataPath}")
+    private String userDataPath;
     @Override
     protected String getDataPath() {
-        return "";
+        return userDataPath;
     }
 
     @Override
     protected Class<User[]> getArrayType() {
-        return null;
+        return User[].class;
     }
 
     public ArrayList<User> getUsers() {
-        return readFromFile();
-    }
-
-    private ArrayList<User> readFromFile() {
-        return null;
+        return findAll();
     }
 
     public User getUserById(UUID userId) {
@@ -43,11 +42,8 @@ public class UserRepository extends MainRepository<User> {
 
         ArrayList<User> users = getUsers();
         users.add(user);
-        writeToFile(users);
+        saveAll(users);
         return user;
-    }
-
-    private void writeToFile(ArrayList<User> users) {
     }
 
     public List<Order> getOrdersByUserId(UUID userId) {
@@ -62,7 +58,7 @@ public class UserRepository extends MainRepository<User> {
                 .findFirst()
                 .ifPresent(user -> {
                     user.getOrders().add(order);
-                    writeToFile(users);
+                    saveAll(users);
                 });
     }
 
@@ -75,13 +71,13 @@ public class UserRepository extends MainRepository<User> {
                     user.setOrders(user.getOrders().stream()
                             .filter(order -> !order.getId().equals(orderId))
                             .collect(java.util.stream.Collectors.toList()));
-                    writeToFile(users);
+                    saveAll(users);
                 });
     }
 
     public void deleteUserById(UUID userId) {
         ArrayList<User> users = getUsers();
         users.removeIf(user -> user.getId().equals(userId));
-        writeToFile(users);
+        saveAll(users);
     }
 }
