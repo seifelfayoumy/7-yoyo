@@ -9,6 +9,24 @@ public class Product {
     private String name;
     private double price;
     
+    // Default constructor
+    public Product() {
+    }
+    
+    // Constructor with name and price
+    public Product(String name, double price) {
+        this.id = UUID.randomUUID();
+        this.name = name;
+        this.price = price;
+    }
+    
+    // Full constructor
+    public Product(UUID id, String name, double price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
+    
     public UUID getId() {
         return id;
     }
