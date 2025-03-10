@@ -52,7 +52,7 @@ public class UserController {
     @PostMapping("/{userId}/checkout")
     public String addOrderToUser(@PathVariable UUID userId) {
         userService.addOrderToUser(userId);
-        return "Order created successfully";
+        return "Order added successfully";
     }
 
     @PostMapping("/{userId}/removeOrder")
@@ -97,12 +97,12 @@ public class UserController {
         // Get user's cart
         Cart userCart = cartService.getCartByUserId(userId);
         if (userCart == null) {
-            return "Cart not found for user";
+            return "Cart is empty";
         }
 
         // Delete product from cart
         cartService.deleteProductFromCart(userCart.getId(), product);
-        return "Product removed from cart successfully";
+        return "Product deleted from cart";
     }
 
     @DeleteMapping("/delete/{userId}")

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Service
 @SuppressWarnings("rawtypes")
-public class UserService extends MainService<User> {
+public class UserService {
     // Dependency Injection Variables
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
@@ -104,6 +104,12 @@ public class UserService extends MainService<User> {
     }
 
     public void deleteUserById(UUID userId) {
+        // Check if user exists
+        User user = userRepository.getUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
         // First delete user's cart
         Cart userCart = cartService.getCartByUserId(userId);
         if (userCart != null) {
