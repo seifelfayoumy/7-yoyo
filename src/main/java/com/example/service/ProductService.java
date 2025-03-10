@@ -9,12 +9,11 @@ import java.util.UUID;
 
 @Service
 @SuppressWarnings("rawtypes")
-public class ProductService extends MainService<Product> {
+public class ProductService {
     private final ProductRepository productRepository;
 
     @Autowired
     public ProductService(ProductRepository productRepository) {
-        super(productRepository);
         this.productRepository = productRepository;
     }
 

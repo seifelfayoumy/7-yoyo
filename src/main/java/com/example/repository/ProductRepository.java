@@ -11,7 +11,6 @@ import java.util.UUID;
 public class ProductRepository extends MainRepository<Product> {
     @Value("${spring.application.productDataPath}")
     private String productDataPath;
-    
     @Override
     protected String getDataPath() {
         return productDataPath;
