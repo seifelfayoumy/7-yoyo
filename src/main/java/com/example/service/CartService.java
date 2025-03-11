@@ -22,6 +22,9 @@ public class CartService {
         if (cart.getId() == null) {
             cart.setId(UUID.randomUUID());
         }
+        if(cart.getUserId() == null){
+            return null;
+        }
         cartRepository.addCart(cart);
         return cart;
     }

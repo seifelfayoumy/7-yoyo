@@ -30,7 +30,11 @@ public class OrderRepository extends MainRepository<Order> {
 
     public void deleteOrderById(UUID orderId) {
         ArrayList<Order> orders = getOrders();
-        orders.removeIf(order -> order.getId().equals(orderId));
+        Order orderToDelete = orders.stream()
+                .filter(order -> order.getId().equals(orderId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Order with ID " + orderId + " not found"));
+        orders.remove(orderToDelete);
         saveAll(orders);
     }
 
