@@ -10,29 +10,43 @@ import java.util.UUID;
 
 @Service
 @SuppressWarnings("rawtypes")
-public class CartService extends MainService<Cart> {
+public class CartService {
     private final CartRepository cartRepository;
 
     @Autowired
     public CartService(CartRepository cartRepository) {
-        super(cartRepository);
         this.cartRepository = cartRepository;
     }
 
-    // Implement all required methods
+    public Cart addCart(Cart cart) {
+        if (cart.getId() == null) {
+            cart.setId(UUID.randomUUID());
+        }
+        cartRepository.addCart(cart);
+        return cart;
+    }
+
+    public ArrayList<Cart> getCarts() {
+        return cartRepository.getCarts();
+    }
+
+    public Cart getCartById(UUID cartId) {
+        return cartRepository.getCartById(cartId);
+    }
+
     public Cart getCartByUserId(UUID userId) {
         return cartRepository.getCartByUserId(userId);
     }
 
     public void addProductToCart(UUID cartId, Product product) {
-
+        cartRepository.addProductToCart(cartId, product);
     }
 
-    public void deleteProductFromCart (UUID cartId, Product product) {
-
+    public void deleteProductFromCart(UUID cartId, Product product) {
+        cartRepository.deleteProductFromCart(cartId, product);
     }
 
-    public void deleteCartById(UUID id) {
-
+    public void deleteCartById(UUID cartId) {
+        cartRepository.deleteCartById(cartId);
     }
 }
