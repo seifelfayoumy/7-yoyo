@@ -40,7 +40,16 @@ public class UserService {
         if (user.getId() == null) {
             user.setId(UUID.randomUUID());
         }
-        return userRepository.addUser(user);
+        User savedUser = userRepository.addUser(user);
+
+        // Create and associate a new cart with the user
+        Cart userCart = new Cart();
+        userCart.setId(UUID.randomUUID());
+        userCart.setUserId(user.getId());
+        userCart.setProducts(new ArrayList<>());
+        cartService.addCart(userCart);
+
+        return savedUser;
     }
 
     public ArrayList<User> getUsers() {

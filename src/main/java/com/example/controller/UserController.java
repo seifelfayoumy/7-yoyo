@@ -78,12 +78,17 @@ public class UserController {
         // Get user's cart
         Cart userCart = cartService.getCartByUserId(userId);
         if (userCart == null) {
-            return "Cart not found for user";
+            // Create a new cart for the user if it doesn't exist
+            userCart = new Cart();
+            userCart.setId(UUID.randomUUID());
+            userCart.setUserId(userId);
+            userCart.setProducts(new ArrayList<>());
+            cartService.addCart(userCart);
         }
 
         // Add product to cart
         cartService.addProductToCart(userCart.getId(), product);
-        return "Product added to cart successfully";
+        return "Product added to cart";
     }
 
     @PutMapping("/deleteProductFromCart")
@@ -107,7 +112,11 @@ public class UserController {
 
     @DeleteMapping("/delete/{userId}")
     public String deleteUserById(@PathVariable UUID userId) {
-        userService.deleteUserById(userId);
-        return "User deleted successfully";
+        try {
+            userService.deleteUserById(userId);
+            return "User deleted successfully";
+        } catch (RuntimeException e) {
+            return "User not found";
+        }
     }
 }

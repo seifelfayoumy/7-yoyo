@@ -50,8 +50,26 @@ public class ProductController {
      */
     @PutMapping("/update/{productId}")
     public Product updateProduct(@PathVariable UUID productId, @RequestBody Map<String, Object> body) {
-        String newName = (String) body.get("name");
-        double newPrice = Double.parseDouble(body.get("price").toString());
+        String newName;
+        double newPrice;
+        
+        // Check for both naming conventions (name/newName and price/newPrice)
+        if (body.get("name") != null) {
+            newName = (String) body.get("name");
+        } else if (body.get("newName") != null) {
+            newName = (String) body.get("newName");
+        } else {
+            throw new IllegalArgumentException("Name is a required field");
+        }
+        
+        if (body.get("price") != null) {
+            newPrice = Double.parseDouble(body.get("price").toString());
+        } else if (body.get("newPrice") != null) {
+            newPrice = Double.parseDouble(body.get("newPrice").toString());
+        } else {
+            throw new IllegalArgumentException("Price is a required field");
+        }
+        
         return productService.updateProduct(productId, newName, newPrice);
     }
 
